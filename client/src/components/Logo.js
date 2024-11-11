@@ -1,4 +1,4 @@
-import logo from "../assets/images/p-icon.svg";
+import logo from "../assets/images/planner-logo.png";
 const Logo = () => {
   return (
     <div className="center-items">

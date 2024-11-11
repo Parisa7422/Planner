@@ -55,11 +55,10 @@ const Register = () => {
     }
   };
 
-  console.log(user);
   useEffect(() => {
     if (user) {
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/");
       }, 3000);
     }
   }, [user, navigate]);
@@ -73,7 +72,8 @@ const Register = () => {
   };
 
   return (
-    <div className="background-img blur-img">
+    <div>
+      <div className="background-img"></div>
       <Wrapper>
         <form onSubmit={onSubmit}>
           {showAlert && <Alert />}
@@ -108,12 +108,12 @@ const Register = () => {
           <button type="submit" className="login-btn btn" disabled={isLoading}>
             {users.isMember ? "Log in" : "Register"}
           </button>
-          {users.isMember && (
+          {/* {users.isMember && (
             <button className="btn gmail-btn">Log in with google</button>
           )}
           {users.isMember && (
             <button className="btn facebook-btn">Log In with facebook</button>
-          )}
+          )} */}
 
           <p>
             {users.isMember

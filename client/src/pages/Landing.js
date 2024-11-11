@@ -5,9 +5,11 @@ const Landing = () => {
     <div className="background-img">
       <div className="header-position">
         <h1>
-          Lorem ipsum dolor <br />
-          sit amet, consetetur <br /> sadipscing elitr.
+          Don’t call it a dream,
+          <br />
+          call it a plan
         </h1>
+        {/* <h3> ― Alexander Graham Bell</h3> */}
         <Link to="/register" className="btn-login btn">
           log in
         </Link>

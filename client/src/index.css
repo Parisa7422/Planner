@@ -8,6 +8,12 @@
 
 }
 
+body {
+  overflow: hidden;
+  background-color: var(--grey-50);
+
+}
+
 :root {
   /* colors */
   --primary-50: #fa4872;
@@ -34,14 +40,19 @@
   --grey-light: #edf0f2;
   --gmail-red: #ac2626;
   --facebook-blue: #405893;
-
+  --btn-green: #53a39f;
   /* rest of the var */
-  --borderRadius: 0.25rem;
+  --borderRadius: 0.30rem;
 }
 
 h1 {
-  color: #fff;
-  font-size: 3.2rem;
+  color: var(--white);
+  font-size: 3em;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+h4 {
   font-weight: 400;
 }
 
@@ -53,6 +64,11 @@ p {
   color: #fff;
 }
 
+/* Medium Screen */
+.month-container-m {
+  display: none;
+}
+
 /* Background Image  */
 .background-img {
   background: url(./assets/images/landing-bg-img.jpg);
@@ -62,12 +78,36 @@ p {
   background-attachment: fixed;
   background-color: burlywood;
   height: 100vh;
-  width: 95%;
+  width: calc(100% - 50px);
   position: absolute;
   right: 0;
   top: 0;
 }
 
+/* Logo */
+.logo {
+  width: 80%;
+  margin-left: 8%;
+}
+
+/* Inspiration Box */
+.inspire-bg {
+  background: url(./assets/images/inspire-bg.png);
+  width: 100%;
+  transform: scale(1.01, 0.985);
+  opacity: 70%;
+  position: relative;
+  background-size: cover;
+}
+
+.inspire-bg::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(3px);
+
+}
 
 /* Landing */
 .header-position {
@@ -105,10 +145,12 @@ form {
 /* Buttons */
 .btn-login {
   background-color: var(--secondary-50);
-  font-size: 2.2em;
-  padding: 1% 2%;
+  font-size: 1.8em;
+  padding: 2% 2%;
+  text-align: center;
   text-decoration: none;
 }
+
 
 .btn {
   color: var(--white);
@@ -116,6 +158,32 @@ form {
   border-radius: var(--borderRadius);
   text-transform: capitalize;
 }
+
+.close-btn {
+  z-index: 2;
+  position: absolute;
+  bottom: -15px;
+  right: 60px;
+  color: var(--grey-300);
+  outline: none;
+}
+
+.delete-btn {
+  position: absolute;
+  right: 1%;
+  bottom: 1%;
+  padding: 1%;
+  color: white;
+
+}
+
+.icon-btn {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+
+}
+
 
 /* Alerts */
 .alert {
@@ -135,4 +203,280 @@ form {
 .alert-success {
   color: green;
   background: gray;
+}
+
+
+
+/* Dashboard */
+
+/* Sidebar */
+
+.sidebar-btn {
+  background-color: var(--grey-200);
+  box-shadow: 0 1px 2px var(--grey-300);
+  border: none;
+  color: var(--grey-300);
+  width: 100%;
+  height: 40px;
+  border-radius: var(--borderRadius);
+  text-transform: capitalize;
+  cursor: pointer;
+  z-index: 0;
+  text-align: center;
+  line-height: 2.5;
+}
+
+.sidebar-btn-select {
+  height: 70%;
+  position: absolute;
+  z-index: 2;
+  transform: scaleX(1.02);
+  box-shadow: 0 1px 3px var(--grey-300);
+  cursor: auto;
+}
+
+.create-goal {
+  padding: 0;
+  width: 80%;
+  background-color: var(--white);
+  box-shadow: 0 2px 6px var(--accent-200);
+  height: fit-content;
+  margin: auto;
+  position: relative;
+}
+
+.goals-textarea {
+  width: 100%;
+  border: none;
+  padding: 4px;
+  outline: none;
+  resize: none;
+  border-radius: var(--borderRadius);
+}
+
+
+
+.form-btn {
+  position: absolute;
+  bottom: -15px;
+  right: 2px;
+  color: var(--grey-300);
+}
+
+.goal-input-container {
+  margin-top: 5%;
+  height: 60px;
+}
+
+.list-item {
+  display: flex;
+  text-align: left;
+  text-transform: none;
+  line-height: 1.8;
+  height: max-content;
+  color: var(--grey-300);
+  padding-left: 3%;
+  list-style: none;
+  cursor: pointer;
+  margin-bottom: 6%;
+  background-color: var(--white);
+  box-shadow: 0 2px 2px var(--accent-200);
+  border-radius: var(--borderRadius);
+
+}
+
+.list-item .icon-btn {
+  margin-left: auto;
+  color: var(--grey-300);
+}
+
+
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: var(--grey-100);
+  border-radius: var(--borderRadius);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--white);
+  border-radius: var(--borderRadius);
+}
+
+.list-items {
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 189px;
+  margin: 0 5% 10%;
+  border-radius: var(--borderRadius);
+  padding: 5%;
+
+
+}
+
+/* Month button */
+
+
+.month-buttons {
+  display: flex;
+  margin-top: 5%;
+  justify-content: space-between;
+
+}
+
+.month-btn {
+  justify-content: space-around;
+  width: fit-content;
+  padding: 0.5%;
+  height: 30px;
+  color: var(--grey-300);
+  border-radius: var(--borderRadius);
+  border: solid var(--grey-300) 1px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.month-btn-default {
+  background-color: var(--btn-green);
+  border: none;
+  color: var(--white);
+  border-radius: var(--borderRadius);
+  cursor: pointer;
+}
+
+.month-btn-selecet {
+  background-color: #80253a;
+}
+
+/* Goal Progress */
+
+.goal-progressbar {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-left: 4%;
+}
+
+.goal-progressbar img {
+  width: 92%;
+  margin: 0 auto;
+
+}
+
+.backward-img {
+  opacity: 100%;
+  z-index: 0;
+}
+
+.forward-img {
+  position: absolute;
+  visibility: hidden;
+  z-index: 2;
+}
+
+.progressbar-box {
+  border: 1px solid var(--grey-300);
+  border-radius: var(--borderRadius);
+  width: 100%;
+  height: 5.5%;
+  margin-top: auto;
+  position: relative;
+}
+
+.progress {
+  background-color: var(--primary-200);
+  color: var(--white);
+  text-align: center;
+  margin: auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: scaleX(1.005);
+  height: 100%;
+  border-radius: var(--borderRadius);
+
+}
+
+@media (max-width: 1200px) {
+
+  /* Month Button Component Style */
+  .month-buttons {
+    display: none;
+  }
+
+  .month-container-m {
+    display: flex;
+    height: 50px;
+    justify-content: space-around;
+    width: 60%;
+    margin: 5% auto 0;
+    align-items: center;
+  }
+
+  .btn-m {
+    cursor: pointer;
+    padding: 1%;
+    border-radius: var(--borderRadius);
+    border: 1px solid var(--grey-300);
+    color: var(--primary-100);
+  }
+
+  .month {
+    color: var(--grey-300);
+    background: var(--grey-100);
+    width: 30%;
+    padding: 2%;
+    text-align: center;
+    cursor: auto;
+  }
+
+  .this-month {
+    background-color: var(--btn-green);
+    border: none;
+    color: var(--white);
+  }
+
+
+  /* Progress bar Section style */
+  .goal-progressbar {
+    width: 40%;
+    margin-left: 0;
+  }
+
+}
+
+@media (max-width: 780px) {
+  .backward-img {
+    display: none;
+  }
+
+  .progressbar-box {
+    height: 15px;
+    width: 200%;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+  }
+}
+
+@media (max-width: 500px) {
+
+  /* display: flex;
+  height: 50px;
+  justify-content: space-around;
+  width: 60%;
+  margin: 5% auto 0;
+  align-items: center; */
+  .month-container-m {
+    width: 100%;
+    justify-content: space-between;
+
+    margin: 100% auto 0;
+  }
+
+  .month {
+    width: 80%;
+  }
 }
