@@ -35,6 +35,8 @@ const SidebarItem = (props) => {
 
   const handleDelete = (id) => {
     deleteGoal(id);
+    console.log("Attempting to delete goal with ID:", id);
+    deleteGoal(id);
     setTimeout(() => {
       getGoals();
     }, 50);
@@ -85,14 +87,14 @@ const SidebarItem = (props) => {
                     textDecoration: goal.done ? "line-through" : "none",
                   }}
                   onClick={() => {
-                    handleEdit(goal._id, goal.done);
+                    handleEdit(goal.id, goal.done);
                   }}
                 >
                   {goal.content}
                   <button
                     className="icon-btn"
                     onClick={() => {
-                      handleDelete(goal._id);
+                      handleDelete(goal.id);
                     }}
                   >
                     <DeleteIcon />

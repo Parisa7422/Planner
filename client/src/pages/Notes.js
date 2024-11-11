@@ -56,7 +56,7 @@ const Notes = () => {
       <div className="note-container">
         {notes.map((note) => {
           return (
-            <div key={note._id} className="note-box" onKeyUp={handleEdit}>
+            <div key={note.id} className="note-box" onKeyUp={handleEdit}>
               {/* <input
                 className="note-content"
                 name="noteTitle"
@@ -72,7 +72,7 @@ const Notes = () => {
               <button
                 className="icon-btn delete-btn"
                 onClick={() => {
-                  deleteNote(note._id);
+                  deleteNote(note.id);
                   setTimeout(() => {
                     getNotes();
                   }, 100);
