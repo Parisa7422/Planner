@@ -9,9 +9,6 @@ dotenv.config();
 import "express-async-errors";
 import morgan from "morgan";
 
-// db and authenticateUser
-import connectDB from "./db/connect.js";
-
 // routets
 import authRoutes from "./routes/authRoutes.js";
 import goalRoutes from "./routes/goalRoutes.js";
@@ -41,13 +38,4 @@ app.use("/api/v1/notes", authenticateUser, noteRoutes);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const start = async () => {
-  try {
-    await connectDB(process.env.MONGO_URL);
-    app.listen(port, () => console.log(`Server is running on port ${port}...`));
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-start();
+app.listen(port, () => console.log(`Server is running on port ${port}...`));

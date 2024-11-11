@@ -1,55 +1,71 @@
-import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please provide name"],
-    minlength: 3,
-    maxlength: 20,
-    trim: true,
+// Mock user database (this is an in-memory array to simulate users)
+const mockUsers = [
+  {
+    id: "1",
+    name: "testuser",
+    email: "testuser@example.com",
+    password: await bcrypt.hash("password123", 10), // Pre-hashed password for simplicity
+    lastName: "Doe",
   },
-  email: {
-    type: String,
-    required: [true, "Please provide email"],
-    validate: {
-      validator: validator.isEmail,
-      message: "Please provide a valid email",
-    },
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: [true, "Please provide password"],
-    minlength: 6,
-    select: false,
-  },
-  lastName: {
-    type: String,
-    maxlength: 20,
-    trim: true,
-    default: "lastName",
-  },
-});
+];
 
-UserSchema.pre("save", async function () {
+// Function to create a new user (Registration)
+export const registerUser = async (name, email, password) => {
+  // Validate email
+  if (!validator.isEmail(email)) {
+    throw new Error("Please provide a valid email");
+  }
+
+  // Check if the email already exists
+  if (mockUsers.some((user) => user.email === email)) {
+    throw new Error("Email already in use");
+  }
+
+  // Hash password
   const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-});
+  const hashedPassword = await bcrypt.hash(password, salt);
 
-// Custom instance Methods
+  // Create a new user object
+  const newUser = {
+    id: (mockUsers.length + 1).toString(),
+    name,
+    email,
+    password: hashedPassword,
+    lastName: "Doe",
+  };
 
-UserSchema.methods.createJWT = function () {
-  return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
+  // Add new user to the mock database
+  mockUsers.push(newUser);
+  return newUser;
+};
+
+// Function to login a user
+export const loginUser = async (email, password) => {
+  // Find user by email
+  const user = mockUsers.find((user) => user.email === email);
+  if (!user) {
+    throw new Error("Invalid credentials");
+  }
+
+  // Compare passwords
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    throw new Error("Invalid credentials");
+  }
+
+  // Create and return JWT token
+  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_LIFETIME,
   });
+
+  return { user, token };
 };
 
-UserSchema.methods.comparePassword = async function (candidatePassword) {
-  const isMatch = await bcrypt.compare(candidatePassword, this.password);
-  return isMatch;
+// Mock password comparison method (for reuse)
+export const comparePassword = async (hashedPassword, candidatePassword) => {
+  return await bcrypt.compare(candidatePassword, hashedPassword);
 };
-
-export default mongoose.model("User", UserSchema);

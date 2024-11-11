@@ -1,21 +1,10 @@
-import jwt from "jsonwebtoken";
-
 const auth = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer")) {
-    throw new Error();
-  }
+  // Mock the user authentication logic
+  const mockUserId = "12345"; // Use a hard-coded user ID for demonstration
 
-  const token = authHeader.split(" ")[1];
-  try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { userId: payload.userId };
-    // console.log(payload); --> userID:XXXXXXX
-    next();
-  } catch (error) {
-    throw new Error();
-  }
-  //console.log(authHeader); --> Beare token
+  // Assigning mock userId
+  req.user = { userId: mockUserId };
+  next();
 };
 
 export default auth;

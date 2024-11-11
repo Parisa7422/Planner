@@ -1,50 +1,63 @@
-import Goal from "../models/Goal.js";
+// Mock data for goals (simulating a database)
+const mockGoals = [
+  {
+    id: 1,
+    title: "First Goal",
+    content: "This is the content of the first goal.",
+    done: false,
+    user_id: 1,
+  },
+  {
+    id: 2,
+    title: "Second Goal",
+    content: "This is the content of the second goal.",
+    done: true,
+    user_id: 2,
+  },
+];
 
-const addTodo = async (req, res) => {
-  req.body.user_id = req.user.userId;
-  const goal = await Goal.create(req.body);
-  res.status(201).json({ goal });
-  // res.send("add");
-};
-
-const getTodos = async (req, res) => {
-  const queryObject = {
+// Function to add a new goal
+const addTodo = (req, res) => {
+  const newGoal = {
+    id: mockGoals.length + 1,
+    ...req.body,
     user_id: req.user.userId,
   };
-
-  let result = Goal.find(queryObject);
-  const goals = await result;
-
-  res.status(200).json({ goals });
-
-  // Goal.find({ user_id: req.user.userId }, function (err, goals) {
-  //   if (!err) {
-  //     res.status(200).json({ goals });
-  //   }
-  // });
-  //res.send("get todos");
+  mockGoals.push(newGoal);
+  res.status(201).json({ goal: newGoal });
 };
 
-const updateTodo = async (req, res) => {
+// Function to get all goals for a user
+const getTodos = (req, res) => {
+  const userGoals = mockGoals.filter(
+    (goal) => goal.user_id === req.user.userId
+  );
+  res.status(200).json({ goals: userGoals });
+};
+
+// Function to update a goal
+const updateTodo = (req, res) => {
   const { id: todoId } = req.params;
-
-  let findTodo = Goal.findOne({ _id: todoId });
-  const goals = await findTodo;
-
-  const update = { done: !goals.done };
-
-  const updateTodo = await Goal.findOneAndUpdate({ _id: todoId }, update, {
-    new: true,
-  });
-
-  // console.log(updateTodo.done);
-  res.status(200).json({ updateTodo });
+  const goalIndex = mockGoals.findIndex((goal) => goal.id === parseInt(todoId));
+  if (goalIndex === -1) {
+    return res.status(404).json({ message: "Goal not found" });
+  }
+  // Update goal with new data from request body
+  mockGoals[goalIndex] = { ...mockGoals[goalIndex], ...req.body };
+  res.status(200).json({ goal: mockGoals[goalIndex] });
 };
 
-const deleteTodo = async (req, res) => {
+// Function to delete a goal
+const deleteTodo = (req, res) => {
   const { id: todoId } = req.params;
-  const deleteTodo = await Goal.deleteOne({ _id: todoId });
-  res.status(200).json({ deleteTodo });
+  const goalIndex = mockGoals.findIndex((goal) => goal.id === parseInt(todoId));
+  if (goalIndex === -1) {
+    return res.status(404).json({ message: "Goal not found" });
+  }
+  const [deletedGoal] = mockGoals.splice(goalIndex, 1);
+  res
+    .status(200)
+    .json({ message: "Goal deleted successfully", goal: deletedGoal });
 };
 
-export { addTodo, getTodos, deleteTodo, updateTodo };
+export { addTodo, getTodos, updateTodo, deleteTodo };

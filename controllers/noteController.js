@@ -1,32 +1,58 @@
-import Note from "../models/Note.js";
+// Mock data for notes (simulating a database)
+const mockNotes = [
+  {
+    id: 1,
+    noteTitle: "First Note",
+    noteContent: "This is the content of the first note.",
+    user_id: 1,
+  },
+  {
+    id: 2,
+    noteTitle: "Second Note",
+    noteContent: "This is the content of the second note.",
+    user_id: 2,
+  },
+];
 
-const addNote = async (req, res) => {
-  req.body.user_id = req.user.userId;
-  const note = await Note.create(req.body);
-
-  res.status(201).json({ note });
+// Function to add a new note
+const addNote = (req, res) => {
+  const newNote = {
+    id: mockNotes.length + 1,
+    ...req.body,
+    user_id: req.user.userId,
+  };
+  mockNotes.push(newNote);
+  res.status(201).json({ note: newNote });
 };
 
-const getAllNotes = async (req, res) => {
-  const notes = await Note.find({ user_id: req.user.userId });
-  res.status(200).json({ notes });
+// Function to get all notes for a user
+const getAllNotes = (req, res) => {
+  const userNotes = mockNotes.filter(
+    (note) => note.user_id === req.user.userId
+  );
+  res.status(200).json({ notes: userNotes });
 };
 
-const updateNote = async (req, res) => {
+// Function to update a note
+const updateNote = (req, res) => {
   const { id: noteID } = req.params;
-
-  const updateNote = await Note.findOneAndUpdate({ _id: noteID }, req.body, {
-    new: true,
-  });
-
-  res.status(200).json({ updateNote });
-  res.send("update");
+  const noteIndex = mockNotes.findIndex((note) => note.id === parseInt(noteID));
+  if (noteIndex === -1) {
+    return res.status(404).json({ message: "Note not found" });
+  }
+  mockNotes[noteIndex] = { ...mockNotes[noteIndex], ...req.body };
+  res.status(200).json({ note: mockNotes[noteIndex] });
 };
 
-const deleteNote = async (req, res) => {
+// Function to delete a note
+const deleteNote = (req, res) => {
   const { id: noteId } = req.params;
-  const deleteNote = await Note.findOneAndDelete({ _id: noteId });
-  res.status(200).json({ deleteNote });
+  const noteIndex = mockNotes.findIndex((note) => note.id === parseInt(noteId));
+  if (noteIndex === -1) {
+    return res.status(404).json({ message: "Note not found" });
+  }
+  const deletedNote = mockNotes.splice(noteIndex, 1);
+  res.status(200).json({ note: deletedNote[0] });
 };
 
 export { addNote, getAllNotes, updateNote, deleteNote };

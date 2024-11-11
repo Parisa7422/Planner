@@ -1,9 +1,25 @@
-import Quotes from "../models/Quotes.js";
-const getQuotes = async (req, res) => {
-  let result = Quotes.find();
-  const quotes = await result;
-  //const totalQuotes = await Quotes.countDocuments(quotes);
-  res.status(200).json({ quotes });
+// Mock data for quotes (simulating a database)
+const mockQuotes = [
+  {
+    id: 1,
+    text: "The journey of a thousand miles begins with one step.",
+    author: "Lao Tzu",
+  },
+  {
+    id: 2,
+    text: "That which does not kill us makes us stronger.",
+    author: "Friedrich Nietzsche",
+  },
+  {
+    id: 3,
+    text: "Life is what happens when you’re busy making other plans.",
+    author: "John Lennon",
+  },
+];
+
+// Function to get all quotes
+const getQuotes = (req, res) => {
+  res.status(200).json({ quotes: mockQuotes });
 };
 
 export { getQuotes };
