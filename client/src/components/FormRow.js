@@ -1,12 +1,13 @@
-const FormRow = (props) => {
+const FormRow = ({ type = "text", name, placeholder, handleChange, value }) => {
   return (
     <input
-      type={props.type}
-      name={props.name}
-      placeholder={props.placeholder}
-      onChange={props.handleChange}
-      value={props.value}
+      type={type}
+      name={name}
+      placeholder={placeholder}
+      onChange={handleChange}
+      value={value}
       className="form-input"
+      autoComplete="off"
     />
   );
 };

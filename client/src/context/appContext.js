@@ -115,11 +115,17 @@ const AppProvider = ({ children }) => {
       });
       // local storage
       addUserToLocalStorage({ user, token });
+
+      // success
+      return true;
     } catch (error) {
       dispatch({
         type: SETUP_USER_ERROR,
         payload: { msg: error.response.data.msg },
       });
+
+      //unsuccessful
+      return false;
     }
     clearAlert();
   };

@@ -1,17 +1,20 @@
 import Landing from "./pages/Landing";
 import Navbar from "./components/Navbar";
 import Register from "./pages/Register";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Notes from "./pages/Notes";
 import About from "./pages/About";
+import { useAppContext } from "./context/appContext";
 
 function App() {
+  const { user } = useAppContext();
   return (
     <BrowserRouter>
-      <Navbar />
+      {user && <Navbar />}
       <Routes>
+        {/* homepage if user logged in */}
         <Route
           path="/"
           element={
@@ -20,7 +23,11 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* Default redirect */}
         <Route path="/register" element={<Register />} />
+
+        {/* Other pages  */}
         <Route
           path="/notes"
           element={
