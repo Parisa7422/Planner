@@ -17,6 +17,7 @@ import {
   OPEN_INPUT,
   CLOSE_INPUT,
   GET_PERCENTAGE,
+  CREATE_HABITS,
 } from "./actions";
 
 const token = localStorage.getItem("token");
@@ -40,6 +41,7 @@ const initialState = {
   noteTitle: "",
   notes: [],
   isExpand: false,
+  habits: [],
 };
 
 const AppContext = React.createContext();
@@ -154,6 +156,10 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLEAR_VALUES });
   };
 
+  // Habits
+  const createHabit = (newHabit) => {
+    dispatch({ type: CREATE_HABITS, payload: { habits: newHabit } });
+  };
   //Goal
   const createGoal = async ({ title }) => {
     try {
@@ -326,6 +332,7 @@ const AppProvider = ({ children }) => {
         createNote,
         getNotes,
         deleteNote,
+        createHabit,
       }}
     >
       {children}

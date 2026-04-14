@@ -1,6 +1,6 @@
 import { Alert, FormRow } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage";
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
 import loginSlide from "../assets/images/login-slide.jpg";

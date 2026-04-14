@@ -39,3 +39,6 @@ export const GET_QUOTES = "GET_QUOTES";
 //notes
 export const GET_NOTES = "GET_NOTES";
 export const EDIT_NOTE = "EDIT_NOTE";
+
+//HABITS
+export const CREATE_HABITS = "CREATE_HABITS";

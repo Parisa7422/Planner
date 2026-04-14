@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import Wrapper from "../assets/wrappers/CalenderBox";
+import { Modal, Box, Typography, Stack, Checkbox } from "@mui/material";
+import { useAppContext } from "../context/appContext";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 const Calender = (props) => {
   useEffect(() => {
     getSelectedMonth();
@@ -15,7 +18,7 @@ const Calender = (props) => {
   const getSelectedMonth = () => {
     let currentDate = new Date();
     if (props.month) {
-      currentDate = new Date(`${props.month} 17, 2022 03:24:00`);
+      currentDate = new Date(`${props.month} 17, 2025 03:24:00`);
     }
     return currentDate;
   };
@@ -66,6 +69,32 @@ const Calender = (props) => {
   const monthLong = currentMonth.toLocaleString("en-US", { month: "long" });
 
   console.log("current month: " + monthLong);
+
+  //for model
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 420,
+    borderRadius: "18px",
+    bgcolor: "#0f2a52",
+    color: "white",
+    boxShadow: 24,
+    p: 3,
+  };
+  //importing from appcontext
+  const { habits } = useAppContext();
+  //selected date
+  const [selectedDateKey, setSelectedDateKey] = useState("");
+  const selected = getSelectedMonth();
+  const y = selected.getFullYear();
+  const m = selected.getMonth() + 1;
+
   return (
     <Wrapper>
       {days.map((day) => {
@@ -80,6 +109,14 @@ const Calender = (props) => {
         return (
           <div
             key={month}
+            onClick={() => {
+              const day = month;
+              const key = `${y}-${String(m).padStart(2, "0")}-${String(
+                day
+              ).padStart(2, "0")}`;
+              setSelectedDateKey(key);
+              setOpen(true);
+            }}
             className={
               (index + 1 === today) &
               (!props.month || props.month === monthLong)
@@ -91,6 +128,41 @@ const Calender = (props) => {
           </div>
         );
       })}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ fontWeight: 700, mb: 2 }}
+          >
+            List of Habit, {selectedDateKey}
+          </Typography>
+          <Stack spacing={2}>
+            {/* Habit's List */}
+            <ul className="habit-list">
+              {habits.map((habit) => (
+                <li key={habit.id} className="habit-row">
+                  <div className="habit-left">
+                    <Checkbox
+                      size="small"
+                      onChange={() => {
+                        console.log(habit.id);
+                      }}
+                    />
+                    <span className="habit-name">{habit.title}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Stack>
+        </Box>
+      </Modal>
     </Wrapper>
   );
 };

@@ -12,7 +12,7 @@ function App() {
   const { user } = useAppContext();
   return (
     <BrowserRouter>
-      {user && <Navbar />}
+      {/* {user && <Navbar />} */}
       <Routes>
         {/* homepage if user logged in */}
         <Route

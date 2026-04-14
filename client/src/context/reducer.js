@@ -15,6 +15,7 @@ import {
   OPEN_INPUT,
   CLOSE_INPUT,
   GET_PERCENTAGE,
+  CREATE_HABITS,
 } from "./actions";
 import { initialState } from "./appContext";
 const reducer = (state, action) => {
@@ -137,6 +138,12 @@ const reducer = (state, action) => {
       ...state,
       noteContent: action.payload.noteContent,
       noteTitle: action.payload.noteTitle,
+    };
+  }
+  if (action.type === CREATE_HABITS) {
+    return {
+      ...state,
+      habits: [...state.habits, action.payload.habits],
     };
   }
 
