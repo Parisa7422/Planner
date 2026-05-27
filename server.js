@@ -1,11 +1,10 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-const app = express();
 
+const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const port = process.env.PORT || 5000;
 
 import dotenv from "dotenv";
@@ -20,7 +19,6 @@ import quoteRoutes from "./routes/quoteRoute.js";
 import noteRoutes from "./routes/noteRoutes.js";
 
 import errorHandlerMiddleware from "./middleware/error-handler.js";
-import notFoundMiddleware from "./middleware/not-found.js";
 import authenticateUser from "./middleware/auth.js";
 
 if (process.env.NODE_ENV !== "production") {
@@ -29,20 +27,18 @@ if (process.env.NODE_ENV !== "production") {
 
 app.use(express.json());
 
+// API routes first
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/goals", authenticateUser, goalRoutes);
 app.use("/api/v1/quotes", authenticateUser, quoteRoutes);
 app.use("/api/v1/notes", authenticateUser, noteRoutes);
 
-// Serve React build in production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client", "build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-  });
-}
+// Serve React — after API routes, no NODE_ENV check needed
+app.use(express.static(path.join(__dirname, "client", "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
-app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
