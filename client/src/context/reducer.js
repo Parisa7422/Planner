@@ -16,6 +16,10 @@ import {
   CLOSE_INPUT,
   GET_PERCENTAGE,
   CREATE_HABITS,
+  UPDATE_HABIT,
+  DELETE_HABIT,
+  TOGGLE_HABIT_DAY,
+  LOAD_HABITS,
 } from "./actions";
 import { initialState } from "./appContext";
 const reducer = (state, action) => {
@@ -111,6 +115,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       goals: action.payload.goals,
+      percentage: action.payload.percentage,
     };
   }
   if (action.type === GET_PERCENTAGE) {
@@ -144,6 +149,49 @@ const reducer = (state, action) => {
     return {
       ...state,
       habits: [...state.habits, action.payload.habits],
+    };
+  }
+
+  if (action.type === UPDATE_HABIT) {
+    return {
+      ...state,
+      habits: state.habits.map((habit) =>
+        habit.id === action.payload.id ? action.payload : habit,
+      ),
+    };
+  }
+
+  if (action.type === DELETE_HABIT) {
+    return {
+      ...state,
+      habits: state.habits.filter((habit) => habit.id !== action.payload),
+    };
+  }
+
+  if (action.type === TOGGLE_HABIT_DAY) {
+    const { habitId, date } = action.payload;
+
+    return {
+      ...state,
+      habits: state.habits.map((habit) => {
+        if (habit.id !== habitId) return habit;
+
+        const alreadyDone = habit.doneDates.includes(date);
+
+        return {
+          ...habit,
+          doneDates: alreadyDone
+            ? habit.doneDates.filter((day) => day !== date)
+            : [...habit.doneDates, date],
+        };
+      }),
+    };
+  }
+
+  if (action.type === LOAD_HABITS) {
+    return {
+      ...state,
+      habits: action.payload,
     };
   }
 

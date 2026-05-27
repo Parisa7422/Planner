@@ -42,3 +42,7 @@ export const EDIT_NOTE = "EDIT_NOTE";
 
 //HABITS
 export const CREATE_HABITS = "CREATE_HABITS";
+export const UPDATE_HABIT = "UPDATE_HABIT";
+export const DELETE_HABIT = "DELETE_HABIT";
+export const TOGGLE_HABIT_DAY = "TOGGLE_HABIT_DAY";
+export const LOAD_HABITS = "LOAD_HABITS";

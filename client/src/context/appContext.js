@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext, useReducer, useEffect } from "react";
 import reducer from "./reducer";
 import axios from "axios";
 import {
@@ -18,6 +18,10 @@ import {
   CLOSE_INPUT,
   GET_PERCENTAGE,
   CREATE_HABITS,
+  UPDATE_HABIT,
+  LOAD_HABITS,
+  TOGGLE_HABIT_DAY,
+  DELETE_HABIT,
 } from "./actions";
 
 const token = localStorage.getItem("token");
@@ -50,6 +54,20 @@ const AppProvider = ({ children }) => {
   // reducer is going to be function which will handle disptach
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  useEffect(() => {
+    const storedHabits = localStorage.getItem("habits");
+    if (storedHabits) {
+      dispatch({
+        type: LOAD_HABITS,
+        payload: JSON.parse(storedHabits),
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("habits", JSON.stringify(state.habits));
+  }, [state.habits]);
+
   // axios
   const authFetch = axios.create({
     baseURL: "/api/v1",
@@ -63,7 +81,7 @@ const AppProvider = ({ children }) => {
     },
     (error) => {
       return Promise.reject(error);
-    }
+    },
   );
   // response
 
@@ -77,7 +95,7 @@ const AppProvider = ({ children }) => {
         logoutUser();
       }
       return Promise.reject(error);
-    }
+    },
   );
 
   const displayAlert = () => {
@@ -107,7 +125,7 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await axios.post(
         `/api/v1/auth/${endPoint}`,
-        currentUser
+        currentUser,
       );
 
       const { user, token } = data;
@@ -157,39 +175,60 @@ const AppProvider = ({ children }) => {
   };
 
   // Habits
-  const createHabit = (newHabit) => {
+  const createHabit = ({ title, target }) => {
+    const newHabit = {
+      id: Date.now().toString(),
+      title: title.trim(),
+      target: Number(target),
+      doneDates: [],
+      createdAt: new Date().toISOString().split("T")[0],
+    };
+
     dispatch({ type: CREATE_HABITS, payload: { habits: newHabit } });
+  };
+  const updateHabit = ({ id, title, target }) => {
+    const existingHabit = state.habits.find((habit) => habit.id === id);
+    if (!existingHabit) return;
+
+    const updatedHabit = {
+      ...existingHabit,
+      title: title.trim(),
+      target: Number(target),
+    };
+
+    dispatch({ type: UPDATE_HABIT, payload: updatedHabit });
+  };
+  const toggleHabitDay = (habitId, date) => {
+    dispatch({
+      type: TOGGLE_HABIT_DAY,
+      payload: { habitId, date },
+    });
+  };
+  const deleteHabit = (id) => {
+    dispatch({ type: DELETE_HABIT, payload: id });
   };
   //Goal
   const createGoal = async ({ title }) => {
     try {
-      const { content, done, percentage } = state;
+      const { content, done } = state;
       await authFetch.post("/goals/add-todo", {
         title,
         content,
         done,
       });
 
-      dispatch({ type: GET_PERCENTAGE, payload: percentage });
+      await getGoals();
+
       // dispatch({ type: ADD_GOAL });
     } catch (error) {
       return console.log(error);
     }
   };
-  const getPercentage = async () => {
-    const { goals } = state;
-    console.log(goals.length);
-    let count = 0;
-    for (let i = 0; i < goals.length; i++) {
-      if (goals[i].done === true) {
-        count++;
-      }
-    }
+  const getPercentage = (goals) => {
+    if (!goals.length) return 0;
 
-    const percentage = Math.floor((count * 100) / goals.length);
-    dispatch({ type: GET_PERCENTAGE, payload: { percentage } });
-    console.log("goals: " + goals.length);
-    console.log("percantage is: " + percentage);
+    const completedGoals = goals.filter((goal) => goal.done).length;
+    return Math.floor((completedGoals * 100) / goals.length);
   };
 
   const getGoals = async () => {
@@ -197,10 +236,13 @@ const AppProvider = ({ children }) => {
       const { data } = await authFetch.get("/goals/todos");
       const { goals } = data;
 
+      const percentage = getPercentage(goals);
+
       dispatch({
         type: GET_GOALS,
         payload: {
           goals,
+          percentage,
         },
       });
       getPercentage();
@@ -231,11 +273,10 @@ const AppProvider = ({ children }) => {
 
   const deleteGoal = async (id) => {
     try {
-      const { percentage } = state;
       await authFetch.delete(`goals/${id}`);
-      dispatch({ type: GET_PERCENTAGE, payload: percentage });
+      await getGoals();
     } catch (error) {
-      return console.log(error);
+      console.log(error);
     }
   };
 
@@ -333,6 +374,9 @@ const AppProvider = ({ children }) => {
         getNotes,
         deleteNote,
         createHabit,
+        deleteHabit,
+        updateHabit,
+        toggleHabitDay,
       }}
     >
       {children}

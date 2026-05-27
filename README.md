@@ -1,79 +1,78 @@
-# Planner Project
+# Planner — Productivity App
 
-## Overview
-This is a personal planning and productivity application developed in **React** and **Express**. It allows users to create and manage goals, notes, quotes, and other important items related to daily productivity. The project initially used **MongoDB** as a database but has since been refactored to use **in-memory mock data** for easier demonstration purposes.
+A full-stack productivity app to track habits, take notes, and stay on top of your goals. Built with React, Node.js, and Express. Features AI-powered habit suggestions using the Claude API.
 
-## Features
-- **User Authentication**: Users can register, log in, and manage their sessions.
-- **Goals Management**: Add, edit, update, and delete personal goals.
-- **Notes**: Create and manage notes to help keep track of various tasks and ideas.
-- **Quotes Management**: Retrieve motivational quotes.
-- **No Database Required**: The current version uses mock data, making it easier to run locally without additional database setup.
+## ✨ Features
 
-## Technologies Used
-- **Frontend**: React, JavaScript, Bootstrap
-- **Backend**: Node.js, Express
-- **State Management**: React Context API
-- **HTTP Client**: Axios
-- **Authentication**: JWT-based user authentication
+- **Habit tracker** — add habits, mark them done each day, track monthly progress
+- **AI habit suggestions** — click "✨ AI suggest" to get personalised habit ideas based on what you're already tracking
+- **Calendar view** — see your month and click any day to view habit status
+- **Notes** — create and delete notes with a clean card layout
+- **Authentication** — register and login with JWT
+- **Responsive** — works on desktop and mobile
 
-## Installation
+## 🖥 Live Demo
 
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/Parisa7422/Planner.git
-   cd Planner
-   ```
+> Coming soon — deploying on Render
 
-2. **Install Dependencies**
-   - Navigate to both the server and client directories and install the dependencies.
-   
-   **For Server**
-   ```bash
-   npm install
-   ```
-   
-   **For Client**
-   ```bash
-   cd client
-   npm install
-   ```
+## 🛠 Tech Stack
 
-3. **Run the Application**
-   - You can run both the client and server concurrently.
-   ```bash
-   npm run dev
-   ```
+**Frontend:** React, React Router, styled-components, Material UI  
+**Backend:** Node.js, Express, JWT authentication  
+**AI:** Claude API (Anthropic) for habit suggestions  
 
-4. **Access the Application**
-   - The client should be available at `http://localhost:3000`
+## 🚀 Running locally
 
-## Usage
+### 1. Clone the repo
+```bash
+git clone https://github.com/Parisa7422/Planner.git
+cd Planner
+```
 
-- **Register** or **Login** to access your planner.
-- Create and manage **goals** to keep track of tasks.
-- Add **notes** to motivate yourself and organize your thoughts.
-- The data is stored temporarily, using in-memory mock data, so restarting the server will clear all information.
+### 2. Set up environment variables
+```bash
+cp .env.example .env
+```
+Edit `.env` and set a `JWT_SECRET` value (any long random string).
 
-## Project Structure
-- **client/**: Contains all React frontend code.
-- **server/**: Contains the Express server code for handling API requests.
-- **mock data**: Used to store goals, notes, and quotes in memory for demonstration purposes.
+### 3. Install dependencies and start
+```bash
+npm install
+npm install --prefix client
+npm run dev
+```
 
-## Scripts
-- **Start the Server**: `npm run server`
-- **Start the Client**: `npm start --prefix client`
-- **Run Both**: `npm run dev`
+The app runs at `http://localhost:3000`
 
-## Important Notes
-- **Database Removal**: The project previously used MongoDB, but now runs completely with mock data for easier testing and demonstration.
-- **Backend Routes**: The server exposes several routes under `/api/v1` for authentication, goals, notes, and quotes management.
-- **Authentication**: JWT is used to protect routes. Since this version does not include a database, user data is not persisted.
+**Demo login:**
+- Email: `testuser@example.com`
+- Password: `password123`
 
-## Contributing
-Feel free to open issues or make pull requests if you find any bugs or think of improvements.
+## 📁 Project structure
 
-## Acknowledgments
-- Inspired by productivity and planning apps to help individuals better organize their daily tasks.
-- Originally developed as a learning project using MongoDB and later adapted to use mock data.
+```
+Planner/
+├── client/          # React frontend
+│   └── src/
+│       ├── pages/   # Dashboard, Notes, Register, Landing
+│       ├── components/  # Calendar, GoalProgress, etc.
+│       ├── context/ # Global state (useReducer + Context API)
+│       └── assets/wrappers/  # styled-components
+├── controllers/     # Route handlers
+├── routes/          # Express routes
+├── middleware/      # Auth, error handling
+├── models/          # Mock data (User, Goal, Note, Quote)
+└── server.js        # Express server
+```
 
+## 💡 What I learned / improved
+
+- **Context API + useReducer** — global state management without Redux
+- **JWT authentication** — protecting routes with middleware
+- **AI integration** — calling the Claude API from a React component
+- **Styled-components** — component-scoped CSS
+- **React Router v6** — protected routes pattern
+
+## 📬 Contact
+
+Parisa Tahery · [LinkedIn](https://www.linkedin.com/in/parisa-taheri-a6688a13b/) · Utrecht, Netherlands

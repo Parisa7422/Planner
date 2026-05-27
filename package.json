@@ -1,16 +1,19 @@
 {
   "name": "planner",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A full-stack productivity planner app",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "server": "nodemon server",
     "client": "npm start --prefix client",
-    "start": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\""
+    "start": "node server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "build": "npm install && npm install --prefix client && npm run build --prefix client",
+    "heroku-postbuild": "npm run build"
   },
   "keywords": [],
-  "author": "",
+  "author": "Parisa Tahery",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

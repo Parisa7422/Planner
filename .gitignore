@@ -1,4 +1,6 @@
-/node_moudules
-.env
-node_modules
+node_modules/
+client/node_modules/
 client/build/
+.env
+*.log
+.DS_Store
