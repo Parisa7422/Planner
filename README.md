@@ -13,7 +13,7 @@ A full-stack productivity app to track habits, take notes, and stay on top of yo
 
 ## 🖥 Live Demo
 
-> Coming soon — deploying on Render
+> **[Live Demo → planner-app-ig7m.onrender.com](https://planner-app-ig7m.onrender.com)**
 
 ## 🛠 Tech Stack
 
